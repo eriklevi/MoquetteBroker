@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import io.moquette.BrokerConstants;
 import io.moquette.server.Server;
 import io.moquette.server.config.MemoryConfig;
-import org.springframework.util.SocketUtils;
+
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,7 +26,6 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
     @Value("${mqtt.websocket_port:8080}")
     private int websocketPort;
     */
-
     private Server server;
     private MemoryConfig config;
 
@@ -47,7 +46,6 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
     @Override
     public void destroy() throws Exception {
         server.stopServer();
-        System.out.println("Server stopped!");
     }
 
     public MemoryConfig getMemoryConfig(){
