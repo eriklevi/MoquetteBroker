@@ -1,13 +1,14 @@
 package com.example.demo;
 
+import io.moquette.broker.Server;
+import io.moquette.broker.config.MemoryConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Component;
 import io.moquette.BrokerConstants;
-import io.moquette.server.Server;
-import io.moquette.server.config.MemoryConfig;
-import org.springframework.util.SocketUtils;
+
+
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -38,7 +39,7 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
         //config.setProperty("websocket_port", Integer.toString(websocketPort));
         config.setProperty("host", InetAddress.getLocalHost().getHostAddress());
         config.setProperty(BrokerConstants.ALLOW_ANONYMOUS_PROPERTY_NAME, "true");
-        //config.setProperty("authenticator_class", SpringAuthenticationWrapper.class.getName());
+        config.setProperty(BrokerConstants.AUTHENTICATOR_CLASS_NAME, AuthenticationWrapper.class.getName());
         //config.setProperty("authorizator_class", SpringAuthorizationWrapper.class.getName());
         server = new Server();
         server.startServer(config);
@@ -53,6 +54,8 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
     public MemoryConfig getMemoryConfig(){
         return this.config;
     }
+
+    public Server getServer() { return this.server;}
 
     @Override
     public void afterPropertiesSet() throws Exception {

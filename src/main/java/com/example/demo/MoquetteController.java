@@ -5,16 +5,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+import java.util.List;
+
 @RestController
 public class MoquetteController {
 
-    @Autowired
-    private MoquetteBroker mb;
+    private final MoquetteBroker mb;
+
+    public MoquetteController(MoquetteBroker mb) {
+        this.mb = mb;
+    }
 
     @RequestMapping("/config")
     @ResponseBody
-    public MoquetteInstance getConfig(){
-    MoquetteInstance mi = new MoquetteInstance(mb.getMemoryConfig().getProperty("host"), Integer.parseInt(mb.getMemoryConfig().getProperty("port")));
-    return mi;
+    public Collection<String> getConfig(){
+    return mb.getServer().getConnectionsManager().getConnectedClientIds();
     }
 }
