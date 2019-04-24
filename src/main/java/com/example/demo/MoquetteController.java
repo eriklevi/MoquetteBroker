@@ -1,12 +1,13 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import io.moquette.broker.ClientDescriptor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class MoquetteController {
@@ -17,9 +18,13 @@ public class MoquetteController {
         this.mb = mb;
     }
 
-    @RequestMapping("/config")
-    @ResponseBody
-    public Collection<String> getConfig(){
-    return mb.getServer().getConnectionsManager().getConnectedClientIds();
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/clients", method = RequestMethod.GET)
+    public List<String> getConnectedClients(){
+         return mb.getServer()
+                 .listConnectedClients()
+                 .stream()
+                 .map(ClientDescriptor::getClientID).collect(Collectors.toList());
     }
+
 }

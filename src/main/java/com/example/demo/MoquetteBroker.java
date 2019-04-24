@@ -34,13 +34,8 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
     public void start() throws IOException {
 
         config = new MemoryConfig(new Properties());
-        //config.setProperty("port", Integer.toString(SocketUtils.findAvailableTcpPort()));
-        config.setProperty("port", Integer.toString(1883));
-        //config.setProperty("websocket_port", Integer.toString(websocketPort));
-        config.setProperty("host", InetAddress.getLocalHost().getHostAddress());
-        config.setProperty(BrokerConstants.ALLOW_ANONYMOUS_PROPERTY_NAME, "true");
+        config.setProperty(BrokerConstants.ALLOW_ANONYMOUS_PROPERTY_NAME, "false");
         config.setProperty(BrokerConstants.AUTHENTICATOR_CLASS_NAME, AuthenticationWrapper.class.getName());
-        //config.setProperty("authorizator_class", SpringAuthorizationWrapper.class.getName());
         server = new Server();
         server.startServer(config);
     }
