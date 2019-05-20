@@ -40,6 +40,4 @@ public class MoquetteController {
     public void stop(){
         mb.stopServer();
     }
-
-
 }

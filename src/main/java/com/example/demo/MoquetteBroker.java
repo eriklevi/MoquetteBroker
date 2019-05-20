@@ -46,6 +46,7 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
         server = new Server();
         server.startServer(config);
         started = true;
+        logger.info("Broker Started");
     }
 
     public void stopServer(){
