@@ -50,9 +50,13 @@ public class MoquetteBroker implements DisposableBean, InitializingBean {
     }
 
     public void stopServer(){
-        server.stopServer();
-        started = false;
-        logger.info("Broker Stopped");
+        if(started){
+            server.stopServer();
+            started = false;
+            logger.info("Broker Stopped");
+        } else {
+            logger.info("Broker already Stopped");
+        }
     }
 
     @Override
