@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,20 @@ public class MoquetteController {
                  .listConnectedClients()
                  .stream()
                  .map(ClientDescriptor::getClientID).collect(Collectors.toList());
+
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
+    public void start() throws IOException {
+        mb.start();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    public void stop(){
+        mb.stopServer();
+    }
+
 
 }
